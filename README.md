@@ -6,3 +6,12 @@
 <li>It's gonne set you apart from every other developers that doesn't known testing  </li> <br>
 </ul>
 
+## Project setup
+```
+npm install
+```
+
+## Run Tests
+```
+npm start
+```
