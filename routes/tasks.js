@@ -1,8 +1,6 @@
-const express = require('express');
-const app = express();
-const utils = require('./utils/task-schema.js')
-
-app.use(express.json());
+var express = require('express');
+var router = express.Router();
+const utils = require('../utils/task-schema.js');
 
 const tasks = [
     {
@@ -23,12 +21,12 @@ const tasks = [
 ];
 
 // GET
-app.get("/api/tasks" , (request, response) => {
+router.get("/tasks" , (request, response) => {
     response.send(tasks);
 });
 
 // GET (BY ID)
-app.get("/api/tasks/:id" , (request, response) => {
+router.get("/tasks/:id" , (request, response) => {
     const taskId = request.params.id;
     const task = tasks.find(task => task.id === parseInt(taskId));
     if(!task) return response.status(404).send("The task with the provided ID does not exist.");
@@ -36,7 +34,7 @@ app.get("/api/tasks/:id" , (request, response) => {
 });
 
 // POST
-app.post("/api/tasks", (request, response) => {
+router.post("/tasks", (request, response) => {
     const { error } = utils.validateTask(request.body);
 
     if(error) return response.status(400).send("The name should be at least 3 chars long!")
@@ -52,7 +50,7 @@ app.post("/api/tasks", (request, response) => {
 });
 
 //PUT
-app.put("/api/tasks/:id", (request, response) => {
+router.put("/tasks/:id", (request, response) => {
     const taskId = request.params.id;
     const task = tasks.find(task => task.id === parseInt(taskId));
     if(!task) return response.status(404).send("The task with the provided ID does not exist.");
@@ -70,7 +68,7 @@ app.put("/api/tasks/:id", (request, response) => {
 
 
 //PATCH
-app.patch("/api/tasks/:id", (request, response) => {
+router.patch("/tasks/:id", (request, response) => {
     const taskId = request.params.id;
     const task = tasks.find(task => task.id === parseInt(taskId));
     if(!task) return response.status(404).send("The task with the provided ID does not exist.");
@@ -88,7 +86,7 @@ app.patch("/api/tasks/:id", (request, response) => {
 });
 
 //DELETE
-app.delete("/api/tasks/:id", (request, response) => {
+router.delete("/tasks/:id", (request, response) => {
     const taskId = request.params.id;
     const task = tasks.find(task => task.id === parseInt(taskId));
     if(!task) return response.status(404).send("The task with the provided ID does not exist.");
@@ -99,5 +97,4 @@ app.delete("/api/tasks/:id", (request, response) => {
 });
 
 
-const port = process.env.PORT || 3000;
-module.exports = app.listen(port, () => console.log(`Listening on port ${port}...`));
+module.exports = router;
